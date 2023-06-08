@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  ca.crt: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  user.crt: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  user.key: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  user.p12: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  user.password: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+kind: Secret
+metadata:
+  name: migration-user-tls
+  namespace: amq-streams-mirror
+type: Opaque

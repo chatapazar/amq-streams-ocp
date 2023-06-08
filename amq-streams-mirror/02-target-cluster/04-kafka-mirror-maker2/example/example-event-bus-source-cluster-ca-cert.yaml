@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  ca.crt: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  ca.p12: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+  ca.password: TO_BE_EXTRACTED_FROM_SOURCE_KAFKA_CLUSTER
+kind: Secret
+metadata:
+  name: event-bus-source-cluster-ca-cert
+  namespace: amq-streams-mirror
+type: Opaque

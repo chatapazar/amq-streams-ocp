@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-0-my-cluster-kafka-1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-05c03d4f-d0d7-41e5-861c-002ff49f3f13
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-25ae7ffd-c5a9-48e8-a3a5-fe4b132b5048
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-fceddeb9-5e5e-4833-b88b-d07fb3d82db4
+---  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-12349854-3615-49b1-a022-d8a97695155e
+---  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-0-my-cluster-kafka-2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-44ac8ff2-fff4-4f9f-93a2-339299016ef4
+---  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-0-my-cluster-kafka-0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp3-retain-csi
+  volumeMode: Filesystem
+  volumeName: pvc-309313d1-41ba-4f30-8974-08261e225eb5
+---    
