@@ -11,7 +11,7 @@ spec:
   clusters:
   ############### SOURCE CLUSTER (Active) ################
   - alias: "my-source-cluster"
-    bootstrapServers: event-bus-kafka-bootstrap-amq-streams-mirror.apps.cluster-hp7bt.hp7bt.sandbox724.opentlc.com:443
+    bootstrapServers: event-bus-kafka-bootstrap-amq-streams-mirror.apps.cluster-m76tq.m76tq.sandbox2869.opentlc.com:443
     tls: 
       trustedCertificates:
       - secretName: event-bus-source-cluster-ca-cert

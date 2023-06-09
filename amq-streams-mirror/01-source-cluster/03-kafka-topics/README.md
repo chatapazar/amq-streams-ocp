@@ -11,7 +11,8 @@ The Kafka Topics are described in the following files:
 You can deploy or update the topics with the following command:
 
 ```shell
-oc apply -f topics/
+oc apply -f topics/my-topic.yml
+#oc apply -f topics/
 ```
 
 This command will show the status of the Kafka Topics:

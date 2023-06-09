@@ -36,7 +36,7 @@ spec:
           - name: BOOTSTRAP_SERVERS
             value: event-bus-kafka-bootstrap:9093
           - name: TOPIC
-            value: apps.samples.greetings
+            value: my-topic
           - name: DELAY_MS
             value: "500"
           - name: LOG_LEVEL

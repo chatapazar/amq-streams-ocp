@@ -223,3 +223,11 @@ bin/kafka-consumer-groups.sh --bootstrap-server event-bus-kafka-bootstrap:9092 -
 oc apply -f 04-deployment-consumer.yml
 oc delete -f 04-deployment-consumer.yml
 
+oc run kafka-producer-perf -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/producer.properties <<EOF 
+bootstrap.servers=event-bus-kafka-bootstrap:9092
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=SCRAM-SHA-512
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+EOF
+bin/kafka-producer-perf-test.sh --topic my-topic --num-records 10000000 --throughput -1 --record-size 2048 --print-metrics --producer.config=/tmp/producer.properties
+"
