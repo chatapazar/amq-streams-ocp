@@ -11,6 +11,7 @@ The Kafka Topics are described in the following files:
 You can deploy or update the topics with the following command:
 
 ```shell
+oc project amq-streams-mirror
 oc apply -f topics/my-topic.yml
 #oc apply -f topics/
 ```

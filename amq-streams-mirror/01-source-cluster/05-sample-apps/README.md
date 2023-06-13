@@ -181,7 +181,7 @@ oc get secret sample-user-scram -o jsonpath='{.data.password}' | base64 -d
 oc run kafka-producer -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/kafka.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=X6aUdFGuONIZ;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=BGUSDdA9HXA3;
 EOF
 bin/kafka-console-producer.sh --broker-list event-bus-kafka-bootstrap:9092 --topic my-topic --producer.config=/tmp/kafka.properties
 "
@@ -189,7 +189,7 @@ bin/kafka-console-producer.sh --broker-list event-bus-kafka-bootstrap:9092 --top
 oc run kafka-info1 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/kafka.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=cqSTmTbgaQrV;
 EOF
 bin/kafka-topics.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --topic my-topic --describe --command-config=/tmp/kafka.properties
 "
@@ -199,7 +199,7 @@ earliest -2
 oc run kafka-info2 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/kafka.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=cqSTmTbgaQrV;
 EOF
 bin/kafka-get-offsets.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --topic my-topic --time -1 --command-config=/tmp/kafka.properties
 "
@@ -207,7 +207,7 @@ bin/kafka-get-offsets.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --top
 oc run kafka-info2 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/kafka.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=cqSTmTbgaQrV;
 EOF
 bin/kafka-get-offsets.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --topic my-topic --time -2 --command-config=/tmp/kafka.properties
 "
@@ -215,7 +215,7 @@ bin/kafka-get-offsets.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --top
 oc run kafka-info4 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/kafka.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=cqSTmTbgaQrV;
 EOF
 bin/kafka-consumer-groups.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --describe --group test-group --command-config=/tmp/kafka.properties
 "
@@ -227,7 +227,7 @@ oc run kafka-producer-perf -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 
 bootstrap.servers=event-bus-kafka-bootstrap:9092
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=AQXUO4ri3ZhP;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=cqSTmTbgaQrV;
 EOF
 bin/kafka-producer-perf-test.sh --topic my-topic --num-records 10000000 --throughput -1 --record-size 2048 --print-metrics --producer.config=/tmp/producer.properties
 "

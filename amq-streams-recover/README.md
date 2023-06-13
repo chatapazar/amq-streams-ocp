@@ -14,6 +14,8 @@ oc get pv
 oc get pvc
 
 oc new-project myproject
+oc get pv
+update volumeName in pvc.yml
 oc apply -f pvc.yml
 delete claimRef in all pv
 oc apply -f topic.yml

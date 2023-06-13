@@ -3,7 +3,7 @@
 Login as normal user:
 
 ```shell
-oc login -u user
+oc login -u user --insecure-skip-tls-verify
 oc new-project amq-streams-mirror
 oc delete limitranges --all
 ```

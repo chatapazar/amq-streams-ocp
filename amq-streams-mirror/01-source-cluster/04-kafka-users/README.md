@@ -31,6 +31,7 @@ Definition [here](./users/sample-streams-user-tls.yml).
 To create the users:
 
 ```shell
+oc project amq-streams-mirror
 oc apply -f ./users/
 ```
 

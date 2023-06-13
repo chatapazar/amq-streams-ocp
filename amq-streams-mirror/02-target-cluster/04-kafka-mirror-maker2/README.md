@@ -30,7 +30,7 @@ Finally we deploy the MirrorMaker2 as: change bootstrapServers: of source cluste
 
 ```shell
 oc apply -f mm2-metric-cm.yml
-oc apply -f event-bus-mirror-maker2.yml
+oc apply -f event-bus-mirror-maker2-noauth.yml
 ```
 
 To confirm the status of the MirrorMaker2:
@@ -110,9 +110,9 @@ oc run kafka-info3 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=tru
 "
 
 
-oc apply -f 04-deployment-consumer.yml
-oc delete -f 04-deployment-consumer.yml
+oc apply -f 06-deployment-consumer.yml
+oc delete -f 06-deployment-consumer.yml
 
-
+add mirror maker 2 dashboard in grafana
 
 * [Kafka MirrorMaker 2.0 Configuration](https://strimzi.io/docs/operators/latest/using.html#assembly-mirrormaker-str)

@@ -6,5 +6,6 @@ oc delete limitranges --all
 oc apply -f kafka.yaml
 oc apply -f my-topic.yml
 
+oc apply -f my-jaeger.yml
 oc apply -f producer.yml
 oc apply -f consumer.yml

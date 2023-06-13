@@ -1,9 +1,4 @@
-# Strimzi Migration Demo
-
-This repo includes a set of resources to demonstrate how Apache MirrorMaker2 could
-help in a migration from a source Apache Kafka cluster to another Apache Kafka cluster :rocket:.
-
-For more context, please review our [blog post](https://strimzi.io/blog/2021/11/22/migrating-kafka-with-mirror-maker2/).
+# Strimzi Mirror Maker 2 Demo
 
 The scenario covered in this repo is to have an Active-Passive deployment of Apache Kafka clusters
 deployed in different OpenShift clusters.
@@ -24,10 +19,10 @@ following the versions described above.
 :rotating_light: **WARN**: This repo is not defined to be a production-ready implementation but it could be used
 as a base line to design and develop your specific use case. Use carefully and by own your responsibility.
 
-## Migration Process Overview
+## Mirror Maker 2 Process Overview
 
-This migration process covers the scenario when you have an Apache Kafka cluster deployed
-in an OpenShift platform (source) and you need to migrate the data and your applications to
+This Mirror Maker 2 process covers the scenario when you have an Apache Kafka cluster deployed
+in an OpenShift platform (source) and you need to mirror the data and your applications to
 a new OpenShift platform (target). This process could be done using other tools or processes
 however in this repo we focused on using one of the tools provided by Apache Kafka ecosystem: Mirror Maker 2.
 
