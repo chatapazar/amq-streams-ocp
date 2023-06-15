@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: java-kafka-streams
+  name: java-kafka-streams
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-kafka-streams
+  template:
+    metadata:
+      labels:
+        app: java-kafka-streams
+    spec:
+      containers:
+        - name: java-kafka-streams
+          image: quay.io/strimzi-examples/java-kafka-streams:latest
+          env:
+            - name: STRIMZI_SOURCE_TOPIC
+              value: apps.samples.greetings
+            - name: STRIMZI_TARGET_TOPIC
+              value: apps.samples.greetings.reversed
+            - name: STRIMZI_LOG_LEVEL
+              value: "INFO"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: my-cluster-kafka-bootstrap:9093
+            - name: KAFKA_APPLICATION_ID
+              value: sample-streams-group
+            - name: KAFKA_DEFAULT_COMMIT_INTERVAL_MS
+              value: "5000"
+            - name: KAFKA_DEFAULT_KEY_SERDE
+              value: "org.apache.kafka.common.serialization.Serdes$StringSerde"
+            - name: KAFKA_DEFAULT_VALUE_SERDE
+              value: "org.apache.kafka.common.serialization.Serdes$StringSerde"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: SSL
+            - name: KAFKA_SSL_TRUSTSTORE_CERTIFICATES
+              valueFrom:
+                secretKeyRef:
+                  name: my-cluster-cluster-ca-cert
+                  key: ca.crt
+            - name: KAFKA_SSL_TRUSTSTORE_TYPE
+              value: PEM
+            - name: KAFKA_SSL_KEYSTORE_CERTIFICATE_CHAIN
+              valueFrom:
+                secretKeyRef:
+                  name: sample-streams-user-tls
+                  key: user.crt
+            - name: KAFKA_SSL_KEYSTORE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sample-streams-user-tls
+                  key: user.key
+            - name: KAFKA_SSL_KEYSTORE_TYPE
+              value: PEM
