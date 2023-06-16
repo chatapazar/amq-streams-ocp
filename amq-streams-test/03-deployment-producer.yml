@@ -27,7 +27,7 @@ spec:
             - name: STRIMZI_MESSAGE_COUNT
               value: "1000000"
             - name: KAFKA_BOOTSTRAP_SERVERS
-              value: my-cluster-kafka-bootstrap-amq-streams-test.apps.cluster-qhnmr.qhnmr.sandbox2809.opentlc.com:443
+              value: my-cluster-kafka-bootstrap-amq-streams-test.apps.cluster-2j5j5.2j5j5.sandbox1138.opentlc.com:443
             - name: KAFKA_KEY_SERIALIZER
               value: "org.apache.kafka.common.serialization.StringSerializer"
             - name: KAFKA_VALUE_SERIALIZER
