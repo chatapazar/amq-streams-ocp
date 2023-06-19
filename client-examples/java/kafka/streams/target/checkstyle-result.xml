@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.2.1">
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/streams/src/main/java/io/strimzi/kafka/streams/KafkaStreamsConfig.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/streams/src/main/java/io/strimzi/kafka/streams/TracingKafkaClientSupplier.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/streams/src/main/java/io/strimzi/kafka/streams/KafkaStreamsExample.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/streams/src/main/resources/log4j2.properties">
+</file>
+</checkstyle>

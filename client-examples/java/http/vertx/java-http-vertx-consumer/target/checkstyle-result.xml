@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.2.1">
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/vertx/java-http-vertx-consumer/src/main/java/HttpKafkaConsumer.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/vertx/java-http-vertx-consumer/src/main/java/HttpKafkaConsumerConfig.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/vertx/java-http-vertx-consumer/src/main/java/ConsumerApp.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/vertx/java-http-vertx-consumer/src/main/resources/log4j2.properties">
+</file>
+</checkstyle>

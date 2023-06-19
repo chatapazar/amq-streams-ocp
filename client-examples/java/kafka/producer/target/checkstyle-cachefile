@@ -1,0 +1,6 @@
+#Fri Jun 16 10:05:18 ICT 2023
+configuration*?=28121600204DDABA35CB8D3F3253AB11558A7766
+module-resource*?\:/Users/ckongman/work/workspace/client-examples/java/kafka/producer/target/checkstyle-suppressions.xml=BE16D0BD730A784B83FB98805CC59237FA93EE2B
+/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/java/io/strimzi/kafka/producer/KafkaProducerExample.java=1686883226040
+/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/java/io/strimzi/kafka/producer/KafkaProducerConfig.java=1686883226040
+/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/resources/log4j2.properties=1686883226040

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.2.1">
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/java/io/strimzi/kafka/producer/KafkaProducerExample.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/java/io/strimzi/kafka/producer/KafkaProducerConfig.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/kafka/producer/src/main/resources/log4j2.properties">
+</file>
+</checkstyle>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.2.1">
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/java/HttpConsumerConfig.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/java/HttpConsumer.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/resources/log4j2.properties">
+</file>
+</checkstyle>

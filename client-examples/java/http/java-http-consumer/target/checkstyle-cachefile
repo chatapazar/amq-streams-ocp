@@ -1,0 +1,6 @@
+#Fri Jun 16 10:05:32 ICT 2023
+configuration*?=76AFF160B43C7E226D2CE03A8615BC558923D823
+module-resource*?\:/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/target/checkstyle-suppressions.xml=BE16D0BD730A784B83FB98805CC59237FA93EE2B
+/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/java/HttpConsumerConfig.java=1686883226027
+/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/java/HttpConsumer.java=1686883226027
+/Users/ckongman/work/workspace/client-examples/java/http/java-http-consumer/src/main/resources/log4j2.properties=1686883226028

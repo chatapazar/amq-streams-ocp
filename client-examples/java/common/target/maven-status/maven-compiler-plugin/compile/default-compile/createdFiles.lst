@@ -1,0 +1,3 @@
+io/strimzi/common/ConfigUtil.class
+io/strimzi/common/TracingInitializer.class
+io/strimzi/common/TracingSystem.class

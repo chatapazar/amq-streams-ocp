@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.2.1">
+<file name="/Users/ckongman/work/workspace/client-examples/java/common/src/main/java/io/strimzi/common/ConfigUtil.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/common/src/main/java/io/strimzi/common/TracingInitializer.java">
+</file>
+<file name="/Users/ckongman/work/workspace/client-examples/java/common/src/main/java/io/strimzi/common/TracingSystem.java">
+</file>
+</checkstyle>

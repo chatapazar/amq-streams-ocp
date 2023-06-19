@@ -1,0 +1,5 @@
+HttpKafkaConsumer.class
+HttpKafkaConsumerConfig.class
+ConsumerApp.class
+HttpKafkaConsumer$CreatedConsumer.class
+HttpKafkaConsumer$ConsumerRecord.class
