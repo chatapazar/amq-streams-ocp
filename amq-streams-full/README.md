@@ -39,8 +39,7 @@
     cd ~/amq-streams-ocp/amq-streams-full/manifest
     oc apply -f kafka-metric.yml
     oc apply -f my-clsuter-kafka.yml 
-    oc apply -f topics/
-    oc apply -f users/
+
     ```
 
 - View Kafka Cluster
@@ -90,7 +89,6 @@
 - create grafana datasource to thanos
   
     ```bash
-    oc project user1-amqstreams-full
     cat grafana-datasource.yml | sed "s#TOKEN#$TOKEN#g" | oc apply -n user1-amqstreams-full -f -
     ```
 
@@ -126,9 +124,13 @@
     
   ![](images/kafka-14.png)
 
+
+    oc apply -f topics/
+    oc apply -f users/
+    
 ## AMQ Streams Test Client
 
-- Create Producer & Consumer with my-topic Topic
+- Create Producer & Consumer with my-topic Topic 
 
     ```bash
     oc project amq-streams-test
