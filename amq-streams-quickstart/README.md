@@ -302,7 +302,7 @@
   - [Dockerfile](https://github.com/strimzi/client-examples/blob/main/java/kafka/producer/Dockerfile) 
 
 - Review Consumer Example Application Code
-  - [KafkaConsumerExample.java]([KafkaConsumerExample.java](https://github.com/strimzi/client-examples/blob/main/java/kafka/consumer/src/main/java/io/strimzi/kafka/consumer/KafkaConsumerExample.java))
+  - [KafkaConsumerExample.java](https://github.com/strimzi/client-examples/blob/main/java/kafka/consumer/src/main/java/io/strimzi/kafka/consumer/KafkaConsumerExample.java)
   - [KafkaConsumerConfig.java](https://github.com/strimzi/client-examples/blob/main/java/kafka/consumer/src/main/java/io/strimzi/kafka/consumer/KafkaConsumerConfig.java)
   - [Dockerfile](https://github.com/strimzi/client-examples/blob/main/java/kafka/consumer/Dockerfile)
   
