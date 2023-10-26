@@ -23,8 +23,10 @@ create_projects() {
         oc login -u user$i -p $USER_PASSWORD --insecure-skip-tls-verify
         oc new-project user$i-amqstreams-quickstart
         oc new-project user$i-amqstreams-full
+        oc new-project user$i-amqstreams-client
         oc delete limitranges --all -n user$i-amqstreams-quickstart
         oc delete limitranges --all -n user$i-amqstreams-full
+        oc delete limitranges --all -n user$i-amqstreams-client
         repeat '-'
     done
     oc login -u admin -p $ADMIN_PASSWORD --insecure-skip-tls-verify
@@ -91,11 +93,11 @@ add_grafana_operator_to_project() {
 ####################################################
 totalUsers=$1
 
-#create_projects
-#repeat '-'
+create_projects
+repeat '-'
 #add_monitoring_edit_role_to_user
 #repeat '-'
 #add_grafana_operator_to_project
 #repeat '-'
-add_monitoring_view_role_to_grafana_serviceaccount
-repeat '-'
+#add_monitoring_view_role_to_grafana_serviceaccount
+#repeat '-'

@@ -133,7 +133,6 @@
 - Create Producer & Consumer with my-topic Topic 
 
     ```bash
-    oc project amq-streams-test
     oc apply -f 01-deployment-producer.yml
     oc apply -f 02-deployment-consumer.yml
     ```
@@ -161,12 +160,13 @@ https://github.com/strimzi/client-examples/tree/main
 - Prepare New Project and get cert & user from kafka project
    
     ```bash
-    oc new-project amq-streams-client
-    oc get secret my-cluster-cluster-ca-cert -o yaml -n amq-streams-test > source-secrets/my-cluster-cluster-ca-cert.yaml
-    oc get secret sample-user-tls -o yaml -n amq-streams-test > source-secrets/sample-user-tls.yaml
+    cd ~/amq-streams-ocp/amq-streams-full/
+    oc project user1-amqstreams-full
+    oc get secret my-cluster-cluster-ca-cert -o yaml -n user1-amqstreams-full > source-secrets/my-cluster-cluster-ca-cert.yaml
+    oc get secret sample-user-tls -o yaml -n user1-amqstreams-full > source-secrets/sample-user-tls.yaml
     ```
 
-- remove info in metadata tag except name & namespace and change namespace to amq-streams-client
+- remove info in metadata tag except name & namespace and change namespace to user1-amqstreams-client
 
     ```yaml
     metadata:
@@ -177,6 +177,7 @@ https://github.com/strimzi/client-examples/tree/main
 - create cert & user secret in project
 
     ```bash
+    cd ~/amq-streams-ocp/amq-streams-full/
     oc apply -f source-secrets
     ```
 
