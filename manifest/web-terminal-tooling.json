@@ -1,0 +1,19 @@
+{
+  "spec": {
+    "components": [
+      {
+        "container": {
+          "args": ["tail", "-f", "/dev/null"],
+          "cpuLimit": "2",
+          "cpuRequest": "500m",
+          "image": "quay.io/asuksunt/web-terminal-tooling:1.0",
+          "memoryLimit": "4Gi",
+          "memoryRequest": "512Mi",
+          "mountSources": false,
+          "sourceMapping": "/projects"
+        },
+        "name": "web-terminal-tooling"
+      }
+    ]
+  }
+}
