@@ -7,7 +7,8 @@
 - [Prerequisite for workshop (Instructor Only)](prereq.md)
 --->
 - [Prerequisite for Workshop (For Instructor Only)](prereq.md)
-- [Basic AMQ Streams on OCP](amq-streams-test/README.md)
+- [AMQ Streams on OCP Quickstart](amq-streams-quickstart/README.md)
+- [Advanced AMQ Streams on OCP ](amq-streams-full/README.md)
 <!---
 - [Basic Serverless, auto scale up & scale down by request](serverless.md)
 - [Complex Cloud-Native Application with Live Flight Track Demo](liveflight.md)
