@@ -159,14 +159,9 @@ https://github.com/strimzi/client-examples/tree/main
   
 - Prepare New Project and get cert & user from kafka project
    
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/
-    oc project user1-amqstreams-full
-    oc get secret my-cluster-cluster-ca-cert -o yaml -n user1-amqstreams-full > source-secrets/my-cluster-cluster-ca-cert.yaml
-    oc get secret sample-user-tls -o yaml -n user1-amqstreams-full > source-secrets/sample-user-tls.yaml
-    ```
-
+download from web console
 - remove info in metadata tag except name & namespace and change namespace to user1-amqstreams-client
+
 
     ```yaml
     metadata:
@@ -176,10 +171,7 @@ https://github.com/strimzi/client-examples/tree/main
 
 - create cert & user secret in project
 
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/
-    oc apply -f source-secrets
-    ```
+
 
 - create producer and consumer deployment
 

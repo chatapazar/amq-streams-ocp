@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: java-kafka-producer
+  name: java-kafka-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-kafka-producer
+  template:
+    metadata:
+      labels:
+        app: java-kafka-producer
+    spec:
+      containers:
+        - name: java-kafka-producer
+          image: quay.io/strimzi-examples/java-kafka-producer:latest
+          env:
+            - name: STRIMZI_TOPIC
+              value: my-topic
+            - name: STRIMZI_DELAY_MS
+              value: "1000"
+            - name: STRIMZI_LOG_LEVEL
+              value: "INFO"
+            - name: STRIMZI_MESSAGE_COUNT
+              value: "1000000"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: KAFKAROUTE
+            - name: KAFKA_KEY_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_VALUE_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: SSL
+            - name: KAFKA_SSL_TRUSTSTORE_CERTIFICATES
+              valueFrom:
+                secretKeyRef:
+                  name: my-cluster-cluster-ca-cert
+                  key: ca.crt
+            - name: KAFKA_SSL_TRUSTSTORE_TYPE
+              value: PEM
+            - name: KAFKA_SSL_KEYSTORE_CERTIFICATE_CHAIN
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.crt
+            - name: KAFKA_SSL_KEYSTORE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.key
+            - name: KAFKA_SSL_KEYSTORE_TYPE
+              value: PEM
