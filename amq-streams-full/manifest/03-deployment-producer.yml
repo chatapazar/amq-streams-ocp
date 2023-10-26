@@ -27,7 +27,7 @@ spec:
             - name: STRIMZI_MESSAGE_COUNT
               value: "1000000"
             - name: KAFKA_BOOTSTRAP_SERVERS
-              value: KAFKAROUTE
+              value: KAFKAROUTE:443
             - name: KAFKA_KEY_SERIALIZER
               value: "org.apache.kafka.common.serialization.StringSerializer"
             - name: KAFKA_VALUE_SERIALIZER

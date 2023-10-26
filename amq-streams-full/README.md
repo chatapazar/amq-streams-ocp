@@ -133,6 +133,7 @@
 - Create Producer & Consumer with my-topic Topic 
 
     ```bash
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
     oc apply -f 01-deployment-producer.yml
     oc apply -f 02-deployment-consumer.yml
     ```
@@ -176,8 +177,14 @@ download from web console
 - create producer and consumer deployment
 
     ```bash
-    oc apply -f 03-deployment-producer.yml
-    oc apply -f 04-deployment-consumer.yml
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
+    oc project user1-amqstreams-full
+    export KAFKAROUTE=$(oc get route my-cluster-kafka-bootstrap -o jsonpath={.spec.host})
+    echo $KAFKAROUTE
+    
+    cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
+    cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
+
     ```
 
 - View producer log
