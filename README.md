@@ -1,4 +1,4 @@
-# Red Hat AMQ Stream on OpenShift Container Platform
+# Red Hat AMQ Streams on OpenShift Container Platform
 
 ![](amq-streams-test/images/logo.png)
 
@@ -6,6 +6,7 @@
 <!---
 - [Prerequisite for workshop (Instructor Only)](prereq.md)
 --->
+- [Prerequisite for Workshop (For Instructor Only)](prereq.md)
 - [Basic AMQ Streams on OCP](amq-streams-test/README.md)
 <!---
 - [Basic Serverless, auto scale up & scale down by request](serverless.md)
