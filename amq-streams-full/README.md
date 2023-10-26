@@ -35,7 +35,7 @@
   - Create Metric ConfigMap, Kafka Cluster, Kafka Topic and Kafka User
 
     ```bash
-    oc project userX-amqstreams-full
+    oc project user1-amqstreams-full
     cd ~/amq-streams-ocp/amq-streams-full/manifest
     oc apply -f kafka-metric.yml
     oc apply -f my-clsuter-kafka.yml 
@@ -65,21 +65,6 @@
 
 - check application workload monitoring install
 
-    ```bash
-    oc get po -n openshift-user-workload-monitoring
-    ```
-
-- wait until all pod running
-
-    ```bash
-    NAME                                  READY   STATUS    RESTARTS   AGE
-    prometheus-operator-cf59f9bdc-zmw4v   2/2     Running   0          3h16m
-    prometheus-user-workload-0            6/6     Running   0          3h16m
-    prometheus-user-workload-1            6/6     Running   0          3h16m
-    thanos-ruler-user-workload-0          4/4     Running   0          3h16m
-    thanos-ruler-user-workload-1          4/4     Running   0          3h16m
-    ```
-
 - create monitor service for kafka component (zookeeper, kafka, exporter, etc.)
 
     ```sh
@@ -105,7 +90,8 @@
 - create grafana datasource to thanos
   
     ```bash
-    cat grafana-datasource.yml | sed "s#TOKEN#$TOKEN#g" | oc apply -n streams-grafana -f -
+    oc project user1-amqstreams-full
+    cat grafana-datasource.yml | sed "s#TOKEN#$TOKEN#g" | oc apply -n user1-amqstreams-full -f -
     ```
 
 - open grafana web ui in streams-grafana
