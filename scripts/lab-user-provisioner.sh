@@ -56,7 +56,7 @@ add_monitoring_view_role_to_grafana_serviceaccount() {
 
     for i in $( seq 1 $totalUsers )
     do
-        oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-sa -n user$i-monitoring
+        oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-serviceaccount -n user$i-amqstreams-full
     done
 }
 
@@ -95,7 +95,7 @@ totalUsers=$1
 #repeat '-'
 #add_monitoring_edit_role_to_user
 #repeat '-'
-#add_monitoring_view_role_to_grafana_serviceaccount
+#add_grafana_operator_to_project
 #repeat '-'
-add_grafana_operator_to_project
+add_monitoring_view_role_to_grafana_serviceaccount
 repeat '-'

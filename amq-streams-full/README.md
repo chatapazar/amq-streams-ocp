@@ -82,7 +82,7 @@
     cd ~/amq-streams-ocp/amq-streams-full/manifest
     cat grafana.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
     cat grafana-sa.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
-    cat grafana-crb.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
+    
     export TOKEN=$(oc create token --duration=999h -n user1-amqstreams-full grafana-serviceaccount)
     echo $TOKEN
     ```
