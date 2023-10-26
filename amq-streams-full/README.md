@@ -57,14 +57,7 @@
 
 ## Create Monitoring for AMQ Streams
 
-- Create Grafana Project, install grafana operator
 
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-    oc apply -f operator-group.yml -n userX-amqstreams-full
-    cat operator-group.yml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
-    oc apply -f grafana-subscription.yml -n userX-amqstreams-full
-    ```
 
 - View Grafana Operator Install Complete!
   
@@ -101,10 +94,11 @@
 - create grafana, service account, cluster role binding and token for connect 
   
     ```bash
-    oc apply -f grafana.yml
-    oc apply -f grafana-sa.yml
-    oc apply -f grafana-crb.yml
-    export TOKEN=$(oc create token --duration=999h -n streams-grafana grafana-serviceaccount)
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
+    cat grafana.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
+    cat grafana-sa.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
+    cat grafana-crb.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
+    export TOKEN=$(oc create token --duration=999h -n user1-amqstreams-full grafana-serviceaccount)
     echo $TOKEN
     ```
 

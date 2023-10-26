@@ -76,8 +76,8 @@ add_grafana_operator_to_project() {
         echo "Installing grafana to project $i ..."
         echo
 
-        cat ../manifest/monitor-group.yml | sed "s#NAMESPACE#user$i-monitoring#g" | oc apply -n user$i-monitoring -f -
-        oc apply -f ../manifest/grafana-subscription-perproject.yml -n user$i-monitoring
+        cat ../manifest/operator-group.yml | sed "s#NAMESPACE#user$i-amqstreams-full#g" | oc apply -n user$i-amqstreams-full -f -
+        oc apply -f ../manifest/grafana-subscription.yml -n user$i-amqstreams-full
 
         echo
         echo "Waiting for $operatorDescParam to be available..."
@@ -93,9 +93,9 @@ totalUsers=$1
 
 #create_projects
 #repeat '-'
-add_monitoring_edit_role_to_user
-repeat '-'
+#add_monitoring_edit_role_to_user
+#repeat '-'
 #add_monitoring_view_role_to_grafana_serviceaccount
 #repeat '-'
-#add_grafana_operator_to_project
-#repeat '-'
+add_grafana_operator_to_project
+repeat '-'

@@ -4,4 +4,4 @@ metadata:
   name: streams-grafana
 spec:
   targetNamespaces:
-  - myproject
+  - NAMESPACE

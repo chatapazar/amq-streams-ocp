@@ -4,4 +4,4 @@ metadata:
   name: grafana-serviceaccount
   labels:
     app: strimzi
-    namespace: streams-grafana
+    namespace: NAMESPACE
