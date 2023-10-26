@@ -60,21 +60,19 @@
 - Create Grafana Project, install grafana operator
 
     ```bash
-    oc new-project streams-grafana
-    oc delete limitranges --all -n streams-grafana
-    oc apply -f operator-group.yml -n streams-grafana
-    oc apply -f grafana-subscription.yml -n streams-grafana
-    oc get pods -n streams-grafana
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
+    oc apply -f operator-group.yml -n userX-amqstreams-full
+    cat operator-group.yml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
+    oc apply -f grafana-subscription.yml -n userX-amqstreams-full
     ```
 
 - View Grafana Operator Install Complete!
   
   ![](images/kafka-4.png)
 
-- Create application workload monitoring configmap
+- check application workload monitoring install
 
     ```bash
-    oc apply -f user-workload-monitoring.yml
     oc get po -n openshift-user-workload-monitoring
     ```
 
@@ -91,8 +89,9 @@
 
 - create monitor service for kafka component (zookeeper, kafka, exporter, etc.)
 
-    ```bahs
-    cat ../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml | sed "s#myproject#amq-streams-test#g" | oc apply -n amq-streams-test -f -
+    ```sh
+    cd ~/amq-streams-ocp/amq-streams-full
+    cat ../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
     ```
 
 - check metrics "strimzi_resources" in project amq-streams-test, observe menu, metrics, custom query (wait 2-3 minutes for openshift get metric to user workload monitoring)

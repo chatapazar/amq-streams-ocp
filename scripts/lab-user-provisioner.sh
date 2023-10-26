@@ -43,6 +43,7 @@ add_monitoring_edit_role_to_user()
         oc adm policy add-role-to-user monitoring-edit user$i -n user$i-amqstreams-quickstart
         oc adm policy add-role-to-user monitoring-edit user$i -n user$i-amqstreams-full
     done
+    oc login -u admin -p $ADMIN_PASSWORD --insecure-skip-tls-verify
 }
 
 add_monitoring_view_role_to_grafana_serviceaccount() {
@@ -90,10 +91,10 @@ add_grafana_operator_to_project() {
 ####################################################
 totalUsers=$1
 
-create_projects
-repeat '-'
-#add_monitoring_edit_role_to_user
+#create_projects
 #repeat '-'
+add_monitoring_edit_role_to_user
+repeat '-'
 #add_monitoring_view_role_to_grafana_serviceaccount
 #repeat '-'
 #add_grafana_operator_to_project
