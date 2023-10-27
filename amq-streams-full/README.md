@@ -204,7 +204,9 @@ delete with console
 - Create Kafka Producer --> Kafka Streams --> Kafka Consumer
   
     ```bash
-    oc project user1-amqstreams-full
+   
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
+     oc project user1-amqstreams-full
     oc apply -f 05-deployment-producer.yml
     oc apply -f 06-deployment-streams.yml
     oc apply -f 07-deployment-consumer.yml
