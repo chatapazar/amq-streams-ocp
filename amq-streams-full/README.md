@@ -181,7 +181,7 @@ download from web console
     oc project user1-amqstreams-full
     export KAFKAROUTE=$(oc get route my-cluster-kafka-bootstrap -o jsonpath={.spec.host})
     echo $KAFKAROUTE
-    
+    oc project user1-amqstreams-client
     cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
     cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
 
@@ -197,17 +197,14 @@ download from web console
 
 - remove producer and consumer deployment
 
-    ```bash
-    oc delete -f 03-deployment-producer.yml
-    oc delete -f 04-deployment-consumer.yml
-    ```
+delete with console
 
 ## Test Kafka Streams
 
 - Create Kafka Producer --> Kafka Streams --> Kafka Consumer
   
     ```bash
-    oc project amq-streams-test
+    oc project user1-amqstreams-full
     oc apply -f 05-deployment-producer.yml
     oc apply -f 06-deployment-streams.yml
     oc apply -f 07-deployment-consumer.yml
