@@ -31,13 +31,6 @@
 
 - Install Web Terminal Operator via OpenShift web console then run these commands to custom the tooling image.
 
-   For some reasons, the web terminal icon doesn't show in OpenShift web console if we install Web Terminal operator via CLI but the issue is gone if we install it via OpenShift web console. That's weird!
-
-   ```sh
-   cd scripts
-   oc annotate devworkspacetemplates.workspace.devfile.io web-terminal-tooling 'web-terminal.redhat.com/unmanaged-state=true' -n openshift-operators
-   oc patch devworkspacetemplates.workspace.devfile.io web-terminal-tooling --type=merge --patch-file=../manifest/web-terminal-tooling.json -n openshift-operators
-   ```
 
 ## Setup Application Workload Monitoring
 
