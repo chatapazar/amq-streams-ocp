@@ -26,35 +26,6 @@
 
     ![](images/prereq-5.png)
 
-## Install Custom Metrics Autoscaler
-- Go to Openshift Console, with Cluster Admin, select Operators, Operator Hub and Search with "Custome Metrics"
-    
-    ![](images/prereq-6.png)
-
-- click Install
-
-    ![](images/prereq-7.png)
-
-- leave all default, click install
-  
-    ![](images/prereq-8.png)
-
-- wait until install complete
-
-    ![](images/prereq-9.png)
-
-- select project openshift-keda, click tab "KedaController", click Create KedaController
-
-    ![](images/prereq-10.png)
-
-- leave all default value, click Create    
-
-    ![](images/prereq-11.png)
-
-- wait until status change to "Phase: Installation Succeeded"
-
-    ![](images/prereq-12.png)
-
 
 ## Setup Web Termianl
 

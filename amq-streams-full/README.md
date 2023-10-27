@@ -12,222 +12,779 @@
     
   ![](images/q2.png)
 
-- Workshop provide 2 workspace, userX-amqstreams-full & userX-amqstreams-quickstart, for this workshop, click 'userX-amqstreams-full'
+- Workshop provide 3 workspace, userX-amqstreams-client, userX-amqstreams-full & userX-amqstreams-quickstart, for this workshop, click 'userX-amqstreams-full' (change userX to you username)
   
   ![](images/q3.png)
 
-- after select project 'userX-amqstreams-full', select Topology in left menu bar. 
+- after select project 'userX-amqstreams-full' (change userX to you username), select Topology in left menu bar. 
 
   ![](images/f1.png)
 
 ## Setup Web Terminal and Git 
 
-- a
+- For run command line in this workshop, we will use OpenShift Web Terminal
+- From OpenShift Console, click web terminal icon (>_) at top right of web console
   
   ![](images/f2.png)
+
+- OpenShift command line terminal will start at buttom of web console, initialize terminal to your project, please select 'userX-amqstreams-full' (change userX to you username), click start button
+
   ![](images/f3.png)
+
+- wait operator deploy terminal pod in your workspace (wait until pod color change to dark blue)
+
   ![](images/f4.png)
-  ![](images/f5.png)
+
+- after deployment complete, web terminall will show at buttom of console. 
+
   ![](images/f6.png)
+
+- clone this repository to use in this workshop with git command
+
+  ```sh
+  cd ~
+  git clone https://github.com/chatapazar/amq-streams-ocp.git
+  ```
+
   ![](images/f7.png)
+
+- check content in repository
+  
+  ```sh
+  cd ~/amq-streams-ocp/amq-streams-full
+  ls
+  ```
+
   ![](images/f8.png)
 
-  - Create Metric ConfigMap, Kafka Cluster, Kafka Topic and Kafka User
-
-    ```bash
-    oc project user1-amqstreams-full
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-    oc apply -f kafka-metric.yml
-    oc apply -f my-clsuter-kafka.yml 
-
-    ```
-
-- View Kafka Cluster
-
-  ![](images/kafka-1.png)
-
-- View Kafka Topics
+- Now! we are ready to continue workshop.
   
-  ![](images/kafka-2.png)
+## Create Advanced AMQ Streams
 
-- View Kafka Users
+- Create Metric ConfigMap for Monitor AMQ Streams
+- Review ConfigMap in [kafka-metric.yml](./manifest/kafka-metric.yml)
+
+  ```yml
+  kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: kafka-metrics
+    labels:
+      app: strimzi
+  data:
+    kafka-metrics-config.yml: |
+      # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics
+      lowercaseOutputName: true
+      rules:
+      # Special cases and very specific rules
+      - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value
+        name: kafka_server_$1_$2
+        type: GAUGE
+        labels:
+        clientId: "$3"
+        topic: "$4"
+        partition: "$5"
+  ...
+    zookeeper-metrics-config.yml: |
+    # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics
+    lowercaseOutputName: true
+    rules:
+    # replicated Zookeeper
+    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
+      name: "zookeeper_$2"
+      type: GAUGE
+  ...    
+  ```
   
-  ![](images/kafka-3.png)
+  - kafka-metrics-config.yml for prometheus jmx_exporter of Kafka Broker
+  - zookeeper-metrics-config.yml for prometheus jmx_exporter of Zookeeper
 
-## Create Monitoring for AMQ Streams
+- Run command create ConfigMap, change userX to your username before run
 
+  ```sh
+  oc project userX-amqstreams-full
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc apply -f kafka-metric.yml
+  ```
 
+  example result
 
-- View Grafana Operator Install Complete!
-  
-  ![](images/kafka-4.png)
+- Reveiw ConfigMap 'kafka-metrics' in Web Console, Click ConfigMaps from left menu bar,
 
-- check application workload monitoring install
+  ![](images/f11.png)
 
-- create monitor service for kafka component (zookeeper, kafka, exporter, etc.)
+- Click ConfigMap 'kafka-metrics' to view details
 
-    ```sh
-    cd ~/amq-streams-ocp/amq-streams-full
-    cat ../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
-    ```
+  ![](images/f12.png)
 
-- check metrics "strimzi_resources" in project amq-streams-test, observe menu, metrics, custom query (wait 2-3 minutes for openshift get metric to user workload monitoring)
-
-    ![](images/kafka-5.png)
-
-- create grafana, service account, cluster role binding and token for connect 
-  
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-    cat grafana.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
-    cat grafana-sa.yml | sed "s#NAMESPACE#user1-amqstreams-full#g" | oc apply -n user1-amqstreams-full -f -
+  - kafka-metrics-config.yml for prometheus jmx_exporter of Kafka Broker
     
-    export TOKEN=$(oc create token --duration=999h -n user1-amqstreams-full grafana-serviceaccount)
-    echo $TOKEN
-    ```
+    ![](images/f13.png)
 
-- create grafana datasource to thanos
+  - zookeeper-metrics-config.yml for prometheus jmx_exporter of Zookeeper
   
-    ```bash
-    cat grafana-datasource.yml | sed "s#TOKEN#$TOKEN#g" | oc apply -n user1-amqstreams-full -f -
-    ```
+    ![](images/f14.png)
 
-- open grafana web ui in streams-grafana
+- Create Kafka Cluster 'my-cluster'
+- Review [my-cluster-kafka.yml](./manifest/my-clsuter-kafka.yml)
+
+  ```yml
+  apiVersion: kafka.strimzi.io/v1beta2
+  kind: Kafka
+  metadata:
+    name: my-cluster
+  spec:
+    kafka:
+      version: 3.2.3
+      replicas: 3
+      authorization:
+        type: simple
+        superUsers:
+        - CN=admin-user-tls      
+        - admin-user-scram
+      listeners:
+        - name: plain
+          port: 9092
+          type: internal
+          tls: false
+          authentication:
+            type: scram-sha-512
+        - name: tls
+          port: 9093
+          type: internal
+          tls: true      
+          authentication:
+            type: tls
+        - name: external
+          port: 9094
+          type: route
+          tls: true
+          authentication:
+            type: tls
+      config:
+        # specify the message format version the broker will use to append messages to the logs
+        log.message.format.version: 3.2.3
+        # Specify which version of the inter-broker protocol will be used.
+        # This is typically bumped after all brokers were upgraded to a new version.
+        inter.broker.protocol.version: 3.2.3
+        # default replication factors for automatically created topics
+        default.replication.factor: 3
+        # The default number of log partitions per topic
+        num.partitions: 1
+  ...
+  ```
+
+  - create kafka cluster name: 'my-cluster'
+  - kafka version: 3.2.3
+  - replicas: 3
+  - set authorization for use in this cluster , set super user
+  - open 3 listener (9092 --> sasl_plain with scram-sha-512, 9093 --> ssl ,9094 --> ssl)
+  - config for kafka broker
+
+  ```yml
+    storage:
+      type: jbod
+      volumes:
+      - id: 0
+        type: persistent-claim
+        size: 100Gi
+        deleteClaim: true
+    livenessProbe:
+      initialDelaySeconds: 60
+      timeoutSeconds: 5
+    readinessProbe:
+      initialDelaySeconds: 60
+      timeoutSeconds: 5
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml    
+  ```
+
+  - set storage type to JBOD (Just a Bunch Of Disks) storage allows you to use multiple disks in each Kafka broker for storing commit logs.
+  - metricsconfig for jmxprometheus exporter link to your configmap 
+
+  ```yml
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 100Gi
+      deleteClaim: true
+    livenessProbe:
+      initialDelaySeconds: 60
+      timeoutSeconds: 5
+    readinessProbe:
+      initialDelaySeconds: 60
+      timeoutSeconds: 5
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: zookeeper-metrics-config.yml
+  entityOperator:
+    topicOperator:
+      reconciliationIntervalSeconds: 60
+    userOperator:
+      reconciliationIntervalSeconds: 60
+    tlsSidecar: {}
+  kafkaExporter:
+    topicRegex: ".*"
+    groupRegex: ".*"
+  ```
+
+  - config zookeeper
+  - config entity operator
+  - config kafka exporter for monitor consumer lag
+
+- advance kafka cluster configuration see this link --> https://access.redhat.com/documentation/en-us/red_hat_amq_streams/2.5/html/deploying_and_managing_amq_streams_on_openshift/overview-str
+- Run command line to create kafka cluster
+
+  ```sh 
+  oc project user1-amqstreams-full
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc apply -f my-clsuter-kafka.yml 
+  ```
+
+- Wait until all pod in 'my-cluster' kafka change color to dark blue
+
+  ![](images/f16.png)
+
+- Review all component in 'my-cluster' kafka
+- click 'my-cluster-entity-operator', view detail in property popup
   
-  ![](images/kafka-6.png)
-
-- user: admin/admin
-
-  ![](images/kafka-7.png)
-
-- test datasources
-
-  ![](images/kafka-8.png)
-
-  ![](images/kafka-9.png)
-
-- import dashboard (kafka, zookeeper, exporter) from strimzi-0.29.0/examples/metrics/grafana-dashboards download folder
+  ![](images/f17.png)
   
-  ![](images/kafka-10.png)
+- click 'my-cluster-zookeeper', view detail in property popup  
 
-  ![](images/kafka-11.png)
+  ![](images/f18.png)
 
-- View Zookeeper Monitor
+- click 'my-cluster-kafka', view detail in property popup
+
+  ![](images/f19.png)
+
+- click 'my-cluster-kafka-exporter', view detail in property popup
+
+  ![](images/f20.png)
+
+- Check service of 'my-cluster', click search in left menu bar, in search page, type 'service' in resource dropdownlist and select '(s) services' check box
+- View service 'my-cluster-kafka-bootstrap', 'my-cluster-kafka-0', 'my-cluster-kafka-1', 'my-cluster-kafka-2' 
+
+  ![](images/f90.png)
+
+- Check route of 'my-cluster', click search in left menu bar, in search page, type 'route' in resource dropdownlist and select '(RT) Routes' check box
+- View route 'my-cluster-kafka-bootstrap','my-cluster-kafka-0','my-cluster-kafka-1','my-cluster-kafka-2'
+
+  ![](images/f89.png)
+
+- Check PersistentVolumeClaims of 'my-cluster', click search in left menu bar, in search page, type 'pvc' in resource dropdownlist and select '(PVC) PersistentVolumeClaims' check box
+- View route 'data-0-my-cluster-kafka-0', 'data-0-my-cluster-kafka-1', 'data-0-my-cluster-kafka-2', 'data-my-cluster-zookeeper-0', 'data-my-cluster-zookeeper-1', 'data-my-cluster-zookeeper-2'
+
+  ![](images/f91.png)
+
+## Monitor AMQ Streams with OpenShift User Workload Monitoring
+
+- Enable [OpenShift User Workload Monitoring](https://docs.openshift.com/container-platform/4.8/monitoring/enabling-monitoring-for-user-defined-projects.html) (ready by instructor)
+- Create Pod Monitor , review [strimzi-pod-monitor.yaml](../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml)
+
+  ```yml
+  apiVersion: monitoring.coreos.com/v1
+  kind: PodMonitor
+  metadata:
+    name: cluster-operator-metrics
+    labels:
+      app: strimzi
+  spec:
+    selector:
+      matchLabels:
+        strimzi.io/kind: cluster-operator
+    namespaceSelector:
+      matchNames:
+        - myproject
+    podMetricsEndpoints:
+    - path: /metrics
+      port: http
+  ---
+  ...
+  ```
+
+- Run command line create monitor object for kafka component (zookeeper, kafka, exporter, etc.)
+- change 'userX' to your username before run command
+
+  ```sh
+  oc project amq-streams-full
+  cd ~/amq-streams-ocp/amq-streams-full
+  cat ../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
+  ```
+
+  ![](images/f23.png)
+
+- Monitor kafka cluster, click Observe in left menu bar
+
+  ![](images/f24.png)
+
+- view monitoring dashboard such as cpu usage, cpu quota, memory usage, memory quota, etc.
+
+- Click tab 'Metrics', click select query, select Custom query
   
-  ![](images/kafka-12.png)
+  ![](images/f25.png)
 
-- View Kafka Monitor
+- type 'strimzi' in expression box wait until auto suggestion appear! (wait 2-3 minutes for openshift get metric to user workload monitoring)
+
+  ![](images/f26.png)
+
+- select metrics "strimzi_resources" and click enter to call dashboard
   
-  ![](images/kafka-13.png)
+  ![](images/f28.png)
 
-- Veiw Kafka Exporter Monitor
+## Monitor Kafka Cluster with Grafana
+
+- Check 'grafan-operator-controller-manager' deploy in your 'userX-amqstreams-full' project (change userX to your username) --> instructor provide this for you
+
+  ![](images/f98.png)
+
+- Create grafana, grafan service account, cluster role binding and token for connect  (change 'userX' to your username)
+  
+  ```bash
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc project userX-amqstreams-full
+  cat grafana.yml | sed "s#NAMESPACE#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
+  cat grafana-sa.yml | sed "s#NAMESPACE#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
+  ```
+
+- Check 'grafana-deployment' deploy in your 'userX-amqstreams-full' project (change userX to your username)
+
+  ![](images/f30.png)
+
+- create grafana datasource to OpenShift User Workload Monitoring (thanos)
+  
+  ```sh
+  export TOKEN=$(oc create token --duration=999h -n userX-amqstreams-full grafana-serviceaccount)
+  echo $TOKEN
+  cat grafana-datasource.yml | sed "s#TOKEN#$TOKEN#g" | oc apply -n userX-amqstreams-full -f -
+  ```
+
+- Open Grafana Web UI, click open url link on 'grafana-deployment'
+
+  ![](images/f33.png)
+  
+  ![](images/f34.png)
+
+- Click sign in at buttom left, 
+
+  ![](images/f35.png)
+
+- login with admin/admin
+
+  ![](images/f36.png)
+
+- skip change password
+
+  ![](images/f37.png)
+
+- verify data source, select configuration in left menu, select Data Sources
+
+  ![](images/f39.png)
+
+- In Data Sources tab, select Prometheus datasource
+
+  ![](images/f40.png)
+
+- Review datasource configuration
+
+  ![](images/f41.png)
+
+- Click save & test for verify data source is working?
+
+  ![](images/f42.png)
+
+- Import Dashboard to Grafana, select Dashboards in left menu, select Manage
+
+  ![](images/f44.png)
+
+- In Dashboards, Manage tab, click Import button
+
+  ![](images/f45.png)
+
+- Copy dashboard from [strimzi-zookeeper.json](../strimzi-0.29.0/examples/metrics/grafana-dashboards/strimzi-zookeeper.json) , click copy icon (near 'Raw' icon)
+
+  ![](images/f46.png)
+
+- Past json in 'Import via panel json' and click load
+
+  ![](images/f47.png)
+
+- leave all default value and select Prometheus to 'Prometheus' data source, click Import
+
+  ![](images/f48.png)
+
+- Review Zookeeper Dashboard
+
+  ![](images/f49.png)
+
+- Repeat again with [strimzi-kafka.json](../strimzi-0.29.0/examples/metrics/grafana-dashboards/strimzi-kafka.json) and [strimzi-kafka-exporter.json](../strimzi-0.29.0/examples/metrics/grafana-dashboards/strimzi-kafka-exporter.json)
+
+- Review Kafka Dashboard
+  
+  ![](images/f50.png)
+  
+- Review Kafka Exporter Dashboard
+
+  ![](images/f52.png)
+
+## Test Kafka with Kafka User
+
+- Reveiw Kafka Topics
+  - [mytopic.yml](./manifest/topics/my-topic.yml)
+  - [greetings-topic.yml](./manifest/topics/greetings-topic.yml)
+  - [greetings-reversed-topic.yml](./manifest/topics/greetings-reversed-topic.yml)
+
+- Review Kafka Users
+  - Super User
+    - [admin-user-scram.yml](./manifest/users/admin-user-scram.yml) for authen with SASL (scram-sha-512)
+    - [admin-user-tls.yml](./manifest/users/admin-user-tls.yml) for authen with TLS/SSL
+  - User with ACLs
+    - [sample-streams-user-tls.yml](./manifest/users/sample-streams-user-tls.yml) for authen with TLS/SSL with ACLs
+    - [sample-user-scram.yml](./manifest/users/sample-user-scram.yml) for authen with SASL (scram-sha-512) & ACLs
+    - [sample-user-tls.yml](./manifest/users/sample-user-tls.yml) for authen with TLS/SSL with ACLs
+
+- Example ACLs
+  - [sample-user-scram.yml](./manifest/users/sample-user-scram.yml) for authen with SASL (scram-sha-512) & ACLs
+  
+  ```yaml
+  apiVersion: kafka.strimzi.io/v1beta2
+  kind: KafkaUser
+  metadata:
+    name: sample-user-scram
+    labels:
+      strimzi.io/cluster: my-cluster
+  spec:
+    authentication:
+      type: scram-sha-512
+    authorization:
+      type: simple
+  ...
+  ```
+  - name: sample-user-scram
+  - strimzi.io/cluster: my-cluster --> for kafka cluster 'my-cluster'
+  - authenticaiton: scram-sha-512 (SASL)
+  
+  ```yaml
+  ...  
+    acls:
+    # Consumer Groups
+    - resource:
+        type: group
+        name: test-group
+        patternType: literal
+      operation: Read
+    - resource:
+        type: group
+        name: sample-group
+        patternType: literal
+      operation: Read
+    - resource:
+        type: group
+        name: sample-consumer-reversed-group
+        patternType: literal
+      operation: Read
+  ...
+  ```
+
+  - set ACL to consumer groups 'test-group' for operation read
+  - set ACL to consumer groups 'sample-group' for operation read
+  - set ACL to consumer groups 'sample-consumer-reversed-group' for operation read
+
+  ```yaml
+  ...
+  # Consumer ACLs for topic 
+    - resource:
+        type: topic
+        name: my-topic
+        patternType: literal
+      operation: Read
+    - resource:
+        type: topic
+        name: my-topic
+        patternType: literal
+      operation: Describe
+    - resource:
+        type: topic
+        name: my-topic
+        patternType: literal
+      operation: Write      
+  ...
+  ```
+
+  - set ACL to topic 'my-topic' for operation read, describe, write
+
+- Recheck Kafka Topic, click search in left menu, type 'topic' in Resources dropdownlist, select check box '(KT) KafkaTopic'
+  
+  ![](images/f54.png)
+
+- View All Topic created.
+  
+  ![](images/f55.png)
+
+- Recheck Kafka User, click search in left menu, type 'kafka' in Resources dropdownlist, select check box '(KU) KafkaUser'
     
-  ![](images/kafka-14.png)
-
-
-    oc apply -f topics/
-    oc apply -f users/
-    
-## AMQ Streams Test Client
-
-- Create Producer & Consumer with my-topic Topic 
-
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-    oc apply -f 01-deployment-producer.yml
-    oc apply -f 02-deployment-consumer.yml
-    ```
-
-- Producer Log
+  ![](images/f56.png)
   
-  ![](images/kafka-15.png)
+- View All User created.  
 
-- Consumer Log    
+  ![](images/f57.png)
+
+- Deploy Sample Kafka Producer/Cosnumer, Review Code at https://github.com/strimzi/client-examples
+- Review Producer Deployment [01-deployment-producer.yml)](./manifest/01-deployment-producer.yml)
   
-  ![](images/kafka-16.png)
+  ```yaml
+  ...
+          - name: java-kafka-producer
+          image: quay.io/strimzi-examples/java-kafka-producer:latest
+          env:
+            - name: STRIMZI_TOPIC
+              value: my-topic
+            - name: STRIMZI_DELAY_MS
+              value: "1000"
+            - name: STRIMZI_LOG_LEVEL
+              value: "INFO"
+            - name: STRIMZI_MESSAGE_COUNT
+              value: "1000000"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: my-cluster-kafka-bootstrap:9093
+            - name: KAFKA_KEY_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_VALUE_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: SSL
+            - name: KAFKA_SSL_TRUSTSTORE_CERTIFICATES
+              valueFrom:
+                secretKeyRef:
+                  name: my-cluster-cluster-ca-cert
+                  key: ca.crt
+            - name: KAFKA_SSL_TRUSTSTORE_TYPE
+              value: PEM
+            - name: KAFKA_SSL_KEYSTORE_CERTIFICATE_CHAIN
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.crt
+            - name: KAFKA_SSL_KEYSTORE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.key
+            - name: KAFKA_SSL_KEYSTORE_TYPE
+              value: PEM
+  ...
+  ```
+  - KAFKA_BOOTSTRAP_SERVERS: my-cluster-kafka-bootstrap:9093, connect to tls listener port 9093 (my-cluster-kafka-bootstrap is service in this project)
+  - KAFKA_SECURITY_PROTOCOL: SSL
+  - KAFKA_SSL_TRUSTSTORE_CERTIFICATES: trustore file --> link to secret 'my-cluster-cluster-ca-cert'
+  - KAFKA_SSL_TRUSTSTORE_TYPE: PEM
+  - KAFKA_SSL_KEYSTORE_CERTIFICATE_CHAIN: keystore --> link to secret 'user.crt'
+  - KAFKA_SSL_KEYSTORE_KEY: keystore key --> link to secret 'user.crt'
+  - KAFKA_SSL_KEYSTORE_TYPE: PEM
 
-- Delete Producer & Consumer
+- Run command to deploy producer, change userX to you username before run
 
-    ```bash
-    oc delete -f 01-deployment-producer.yml
-    oc delete -f 02-deployment-consumer.yml
-    ```
-
-- client example code
-https://github.com/strimzi/client-examples/tree/main
-
-## Kafak Client connect with Route
+  ```yaml
+  oc project userX-amqstreams-full
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc apply -f 01-deployment-producer.yml
+  ```
   
-- Prepare New Project and get cert & user from kafka project
-   
-download from web console
-- remove info in metadata tag except name & namespace and change namespace to user1-amqstreams-client
+- Review 'java-kafka-producer' deployment
 
+  ![](images/f60.png)
 
-    ```yaml
-    metadata:
-      name: sample-user-tls     
-      namespace: amq-streams-client
-    ```
+- Review 'java-kafka-producer' Logs, (click pod in resources tab, and select logs tab in Pod details)
 
-- create cert & user secret in project
+  ![](images/f61.png)
 
-
-
-- create producer and consumer deployment
-
-    ```bash
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-    oc project user1-amqstreams-full
-    export KAFKAROUTE=$(oc get route my-cluster-kafka-bootstrap -o jsonpath={.spec.host})
-    echo $KAFKAROUTE
-    oc project user1-amqstreams-client
-    cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
-    cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
-
-    ```
-
-- View producer log
+- Run command to deploy producer, change userX to you username before run
   
-  ![](images/kafka-17.png)
+  ```yaml
+  oc apply -f 02-deployment-consumer.yml
+  ```
 
-- View consumer log
-
-  ![](images/kafka-18.png)
-
-- remove producer and consumer deployment
-
-delete with console
-
-## Test Kafka Streams
-
-- Create Kafka Producer --> Kafka Streams --> Kafka Consumer
+- Review 'java-kafka-consumer' deployment
   
-    ```bash
-   
-    cd ~/amq-streams-ocp/amq-streams-full/manifest
-     oc project user1-amqstreams-full
-    oc apply -f 05-deployment-producer.yml
-    oc apply -f 06-deployment-streams.yml
-    oc apply -f 07-deployment-consumer.yml
-    ```
-
-- View Producer Log
+  ![](images/f63.png)
   
-  ![](images/kafka-19.png)
+- Review 'java-kafka-consumer' Logs, (click pod in resources tab, and select logs tab in Pod details)
 
-- View Streams Log
+  ![](images/f64.png)
+
+- Delete producer & consumer deployment with command
   
-  ![](images/kafka-20.png)
+  ```yaml
+  oc delete -f 01-deployment-producer.yml
+  oc delete -f 02-deployment-consumer.yml
+  ```
 
-- View Consumer Log
+## Test Kafka Client with OpenShift Route
 
-  ![](images/kafka-21.png)
-
-- Remove Producer, Streams, Consumer
+- Get TLS/SSL from Kafka Clsuter
+- Click Secret from left menu, (see my-cluster-cluster-ca-cert and sample-user-tls)
   
-    ```bash
-    oc delete -f 05-deployment-producer.yml
-    oc delete -f 06-deployment-streams.yml
-    oc delete -f 07-deployment-consumer.yml
-    ```
+  ![](images/f66.png)
+
+- Review secret 'my-cluster-cluster-ca-cert'
+  
+  ![](images/f67.png)
+
+- click tab YAML, click Download to your laptop
+
+  ![](images/f70.png)
+
+- Use your editor in your laptop, edit 'my-cluster-cluster-ca-cert.yaml'
+  
+  -  remove all info in metadata tag except name & namespace and change namespace to userX-amqstreams-client (change userX to your username)
+
+  ![](images/f78.png)
+
+- repeat again with secret 'sample-user-tls' (download & edit)
+
+  ![](images/f77.png)
+
+- back to openshift console, select project 'userX-amqstreams-client' and click plus icon at top right of openshift console to open Import YAML editor. (change userX to your username)
+
+  ![](images/f74.png)
+
+  ![](images/f75.png)
+
+- In Import YAML Editor, copy and paste 'my-cluster-cluster-ca-cert' (after edit), click create
+  
+  ![](images/f76.png)
+
+- repeat again with 'sample-user-tls' (after edit)
+
+  ![](images/f79.png)
+
+- Recheck both secret created in userX-amqstreams-client project (click secret in left menu)
+
+  ![](images/f80.png)
+
+
+- Review [03-deployment-producer.yml](./manifest/03-deployment-producer.yml) before deploy
+  
+  ```yaml
+      spec:
+      containers:
+        - name: java-kafka-producer
+          image: quay.io/strimzi-examples/java-kafka-producer:latest
+          env:
+            - name: STRIMZI_TOPIC
+              value: my-topic
+            - name: STRIMZI_DELAY_MS
+              value: "1000"
+            - name: STRIMZI_LOG_LEVEL
+              value: "INFO"
+            - name: STRIMZI_MESSAGE_COUNT
+              value: "1000000"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: KAFKAROUTE:443
+            - name: KAFKA_KEY_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_VALUE_SERIALIZER
+              value: "org.apache.kafka.common.serialization.StringSerializer"
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: SSL
+            - name: KAFKA_SSL_TRUSTSTORE_CERTIFICATES
+              valueFrom:
+                secretKeyRef:
+                  name: my-cluster-cluster-ca-cert
+                  key: ca.crt
+            - name: KAFKA_SSL_TRUSTSTORE_TYPE
+              value: PEM
+            - name: KAFKA_SSL_KEYSTORE_CERTIFICATE_CHAIN
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.crt
+            - name: KAFKA_SSL_KEYSTORE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sample-user-tls
+                  key: user.key
+            - name: KAFKA_SSL_KEYSTORE_TYPE
+              value: PEM
+  ```
+  
+  - KAFKA_BOOTSTRAP_SERVERS: KAFKAROUTE:443 (what is KAFKAROUTE? it is openshift route to kafka cluster, we will get it from command line)
+
+- run command line to deploy producer in userX-amqstreams-client (change userX to your username)
+  
+  ```sh
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc project userX-amqstreams-full
+  export KAFKAROUTE=$(oc get route my-cluster-kafka-bootstrap -o jsonpath={.spec.host})
+  echo $KAFKAROUTE
+  oc project userX-amqstreams-client
+  cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
+  cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
+  ```
+
+- Review producer & consumer in userX-amqstreams-client project
+
+  ![](images/f81.png)
+
+  ![](images/f82.png)
+
+  ![](images/f83.png)
+
+  ![](images/f84.png)
+
+- Delete producer & consumer deployment with web console, select deployment and click action menu, select delete deployment, confirm delete
+
+  ![](images/f85.png)
+
+  ![](images/f86.png)
+
+  ![](images/f87.png)
+
+## Test Kafka Streams with AMQ Strams
+
+- Review Example Kafka Strams Java Code [KafkaStreamsExample.java](https://github.com/strimzi/client-examples/blob/main/java/kafka/streams/src/main/java/io/strimzi/kafka/streams/KafkaStreamsExample.java)
+- Review Example Kafka Streams Deployment [06-deployment-streams.yml](./manifest/06-deployment-streams.yml)
+
+- Message Flow for This Example
+  - producer --> Kafka Topic : apps.samples.greetings --> Kafka Stream (Reverse Message) --> Kafka Topic : apps.samples.greetings.reversed --> consumer
+
+- Back to userX-amqstreams-full again, click Topology view at left menu 
+
+  ![](images/f88.png)
+
+- Run Command Line to deploy amq streams (change userX to your username before run)
+  
+  ```sh
+  cd ~/amq-streams-ocp/amq-streams-full/manifest
+  oc project userX-amqstreams-full
+  oc apply -f 05-deployment-producer.yml
+  oc apply -f 06-deployment-streams.yml
+  oc apply -f 07-deployment-consumer.yml
+  ```
+
+- Review Producer
+     
+  ![](images/f92.png)
+  
+  ![](images/f93.png)
+
+- Review Kafka Stream
+  
+  ![](images/f94.png)
+  
+  ![](images/f95.png)
+  
+- Review Consumer
+  
+  ![](images/f96.png)
+  
+  ![](images/f97.png)
+
