@@ -6,6 +6,7 @@
 <!---
 - [Prerequisite for workshop (Instructor Only)](prereq.md)
 --->
+- [Prerequisite for Workshop (Instructor Only)](prereq.md)
 - [AMQ Streams on OCP Quickstart](amq-streams-quickstart/README.md)
 - [Advanced AMQ Streams on OCP ](amq-streams-full/README.md)
 <!---

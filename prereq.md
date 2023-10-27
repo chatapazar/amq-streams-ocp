@@ -78,3 +78,4 @@
    **Following projects/namespaces will be created for each user:**
    * user*X*-amqstreams-quickstart
    * user*X*-amqstreams-full
+   * user*X*-amqstreams-client
