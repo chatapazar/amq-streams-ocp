@@ -740,8 +740,8 @@
   export KAFKAROUTE=$(oc get route my-cluster-kafka-bootstrap -o jsonpath={.spec.host})
   echo $KAFKAROUTE
   oc project userX-amqstreams-client
-  cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
-  cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n user1-amqstreams-client -f -
+  cat 03-deployment-producer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n userX-amqstreams-client -f -
+  cat 04-deployment-consumer.yml | sed "s#KAFKAROUTE#$KAFKAROUTE#g" | oc apply -n userX-amqstreams-client -f -
   ```
 
 - Review producer & consumer in userX-amqstreams-client project
