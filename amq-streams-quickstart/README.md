@@ -113,7 +113,7 @@
   ![](images/q16.png)
 
 - Click create button, 
-- Check Kafa Topic, click search in left menu bar, 
+- Check Kafka Topic, click search in left menu bar, 
   
   ![](images/q17.png)
 
@@ -168,7 +168,7 @@
 - view kafka topic with command line, type below command in terminal
   
   ```bash
-  ./kafa-topics.sh --bootstrap-server localhost:9092 --list
+  ./kafka-topics.sh --bootstrap-server localhost:9092 --list
   ```
   
   example result
