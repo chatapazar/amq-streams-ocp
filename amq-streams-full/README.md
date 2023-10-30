@@ -315,7 +315,7 @@
 - change 'userX' to your username before run command !!!
 
   ```sh
-  oc project amq-streams-full
+  oc project userX-amqstreams-full
   cd ~/amq-streams-ocp/amq-streams-full
   cat ../strimzi-0.29.0/examples/metrics/prometheus-install/strimzi-pod-monitor.yaml | sed "s#myproject#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
   ```
