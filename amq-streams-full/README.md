@@ -241,10 +241,10 @@
   - config kafka exporter for monitor consumer lag
 
 - advance kafka cluster configuration see this link --> https://access.redhat.com/documentation/en-us/red_hat_amq_streams/2.5/html/deploying_and_managing_amq_streams_on_openshift/overview-str
-- Run command line to create kafka cluster
+- Run command line to create kafka cluster (change userX to your username before run !!!)
 
   ```sh 
-  oc project user1-amqstreams-full
+  oc project userX-amqstreams-full
   cd ~/amq-streams-ocp/amq-streams-full/manifest
   oc apply -f my-clsuter-kafka.yml 
   ```
