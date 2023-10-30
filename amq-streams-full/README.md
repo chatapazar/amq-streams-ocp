@@ -521,6 +521,20 @@
 
   - set ACL to topic 'my-topic' for operation read, describe, write
 
+- Run Both Kafkas Topic & Kafka Users with Command Line or Import YAML
+  - with command line (change userX to your username before run !!!)
+
+    ```sh
+    cd ~/amq-streams-ocp/amq-streams-full/manifest
+    oc project userX-amqstreams-full
+    oc apply -f topics
+    oc apply -f users
+    ```
+
+  - with Import YAML
+    
+    ![](../amq-streams-quickstart/images/q44.png)
+  
 - Recheck Kafka Topic, click search in left menu, type 'topic' in Resources dropdownlist, select check box '(KT) KafkaTopic'
   
   ![](images/f54.png)
