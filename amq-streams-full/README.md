@@ -12,11 +12,11 @@
     
   ![](images/q2.png)
 
-- Workshop provide 3 workspace, userX-amqstreams-client, userX-amqstreams-full & userX-amqstreams-quickstart, for this workshop, click 'userX-amqstreams-full' (change userX to you username)
+- Workshop provide 3 workspace, userX-amqstreams-client, userX-amqstreams-full & userX-amqstreams-quickstart, for this workshop, click 'userX-amqstreams-full' (change userX to you username !!!)
   
   ![](images/q3.png)
 
-- after select project 'userX-amqstreams-full' (change userX to you username), select Topology in left menu bar. 
+- after select project 'userX-amqstreams-full' (change userX to you username !!!), select Topology in left menu bar. 
 
   ![](images/f1.png)
 
@@ -27,7 +27,7 @@
   
   ![](images/f2.png)
 
-- OpenShift command line terminal will start at buttom of web console, initialize terminal to your project, please select 'userX-amqstreams-full' (change userX to you username), click start button
+- OpenShift command line terminal will start at buttom of web console, initialize terminal to your project, please select 'userX-amqstreams-full' (change userX to you username !!!), click start button
 
   ![](images/f3.png)
 
@@ -99,7 +99,7 @@
   - kafka-metrics-config.yml for prometheus jmx_exporter of Kafka Broker
   - zookeeper-metrics-config.yml for prometheus jmx_exporter of Zookeeper
 
-- Run command create ConfigMap, change userX to your username before run
+- Run command create ConfigMap, change userX to your username before run !!!
 
   ```sh
   oc project userX-amqstreams-full
@@ -312,7 +312,7 @@
   ```
 
 - Run command line create monitor object for kafka component (zookeeper, kafka, exporter, etc.)
-- change 'userX' to your username before run command
+- change 'userX' to your username before run command !!!
 
   ```sh
   oc project amq-streams-full
@@ -342,11 +342,11 @@
 
 ## Monitor Kafka Cluster with Grafana
 
-- Check 'grafan-operator-controller-manager' deploy in your 'userX-amqstreams-full' project (change userX to your username) --> instructor provide this for you
+- Check 'grafan-operator-controller-manager' deploy in your 'userX-amqstreams-full' project (change userX to your username !!!) --> instructor provide this for you
 
   ![](images/f98.png)
 
-- Create grafana, grafan service account, cluster role binding and token for connect  (change 'userX' to your username)
+- Create grafana, grafan service account, cluster role binding and token for connect  (change 'userX' to your username !!!)
   
   ```bash
   cd ~/amq-streams-ocp/amq-streams-full/manifest
@@ -355,7 +355,7 @@
   cat grafana-sa.yml | sed "s#NAMESPACE#userX-amqstreams-full#g" | oc apply -n userX-amqstreams-full -f -
   ```
 
-- Check 'grafana-deployment' deploy in your 'userX-amqstreams-full' project (change userX to your username)
+- Check 'grafana-deployment' deploy in your 'userX-amqstreams-full' project (change userX to your username !!!)
 
   ![](images/f30.png)
 
@@ -590,7 +590,7 @@
   - KAFKA_SSL_KEYSTORE_KEY: keystore key --> link to secret 'user.crt'
   - KAFKA_SSL_KEYSTORE_TYPE: PEM
 
-- Run command to deploy producer, change userX to you username before run
+- Run command to deploy producer, change userX to you username before run !!!
 
   ```yaml
   oc project userX-amqstreams-full
@@ -606,7 +606,7 @@
 
   ![](images/f61.png)
 
-- Run command to deploy producer, change userX to you username before run
+- Run command to deploy producer, change userX to you username before run !!!
   
   ```yaml
   oc apply -f 02-deployment-consumer.yml
@@ -644,7 +644,7 @@
 
 - Use your editor in your laptop, edit 'my-cluster-cluster-ca-cert.yaml'
   
-  -  remove all info in metadata tag except name & namespace and change namespace to userX-amqstreams-client (change userX to your username)
+  -  remove all info in metadata tag except name & namespace and change namespace to userX-amqstreams-client (change userX to your username !!!)
 
   ![](images/f78.png)
 
@@ -652,7 +652,7 @@
 
   ![](images/f77.png)
 
-- back to openshift console, select project 'userX-amqstreams-client' and click plus icon at top right of openshift console to open Import YAML editor. (change userX to your username)
+- back to openshift console, select project 'userX-amqstreams-client' and click plus icon at top right of openshift console to open Import YAML editor. (change userX to your username !!!)
 
   ![](images/f74.png)
 
@@ -718,7 +718,7 @@
   
   - KAFKA_BOOTSTRAP_SERVERS: KAFKAROUTE:443 (what is KAFKAROUTE? it is openshift route to kafka cluster, we will get it from command line)
 
-- run command line to deploy producer in userX-amqstreams-client (change userX to your username)
+- run command line to deploy producer in userX-amqstreams-client (change userX to your username !!!)
   
   ```sh
   cd ~/amq-streams-ocp/amq-streams-full/manifest
@@ -760,7 +760,7 @@
 
   ![](images/f88.png)
 
-- Run Command Line to deploy amq streams (change userX to your username before run)
+- Run Command Line to deploy amq streams (change userX to your username before run !!!)
   
   ```sh
   cd ~/amq-streams-ocp/amq-streams-full/manifest
