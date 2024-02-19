@@ -246,7 +246,7 @@
   ```sh 
   oc project userX-amqstreams-full
   cd ~/amq-streams-ocp/amq-streams-full/manifest
-  oc apply -f my-clsuter-kafka.yml 
+  oc apply -f my-cluster-kafka.yml 
   ```
 
 - Wait until all pod in 'my-cluster' kafka change color to dark blue
