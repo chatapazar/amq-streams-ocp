@@ -1,0 +1,9 @@
+kind: Jaeger
+apiVersion: jaegertracing.io/v1
+metadata:
+  name: my-otlp
+  namespace: amq-streams-tracing
+spec:
+  strategy: allInOne
+status:
+  phase: Running
