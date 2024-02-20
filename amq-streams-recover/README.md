@@ -1,12 +1,17 @@
+```sh
 oc login --insecure-skip-tls-verify
-oc apply -f storage-retain.yml
+#oc apply -f storage-retain.yml
+oc apply -f demo-storage-retain.yml
 oc new-project myproject
 oc apply -f kafka-retain.yaml
 oc apply -f topic.yml
+
 deploy obsidiandynamics/kafdrop
 set KAFKA_BROKERCONNECT=my-cluster-kafka-bootstrap:9092
 port 9000:9000
+
 oc apply -f 01-deployment-producer.yml
+
 oc delete -f 01-deployment-producer.yml
 
 oc delete project myproject
@@ -24,3 +29,4 @@ oc apply -f kafka-retain.yaml
 deploy obsidiandynamics/kafdrop
 set KAFKA_BROKERCONNECT=my-cluster-kafka-bootstrap:9092
 port 9000:9000
+```
