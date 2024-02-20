@@ -1,3 +1,4 @@
+```sh
 oc login --insecure-skip-tls-verify
 oc new-project amq-streams-cruise
 
@@ -56,3 +57,4 @@ wait until change to ready
 
 oc run kafka-info1 -ti --image=quay.io/strimzi/kafka:latest-kafka-3.2.0 --rm=true --restart=Never -- /bin/bash -c "bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic --describe
 "
+```

@@ -15,6 +15,7 @@ oc apply -f 01-deployment-producer.yml
 oc delete -f 01-deployment-producer.yml
 
 oc delete project myproject
+#my-cluster1
 oc get pv
 oc get pvc
 

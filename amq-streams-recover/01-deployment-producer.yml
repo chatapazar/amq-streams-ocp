@@ -19,7 +19,7 @@ spec:
         image: strimzi/hello-world-producer:latest
         env:
           - name: BOOTSTRAP_SERVERS
-            value: my-cluster-kafka-bootstrap:9092
+            value: my-cluster1-kafka-bootstrap:9092
           - name: TOPIC
             value: my-topic
           - name: DELAY_MS
