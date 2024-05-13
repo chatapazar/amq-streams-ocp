@@ -291,7 +291,7 @@
 
   ![](images/k5.png)
 
-- click create button and wait until KameletBinding 'kafka-to-log' change status to 'Ready' status
+- click create button and wait until KameletBinding 'kafka-to-log' change status to 'Ready' status (wait 2-3 minutes)
   
 - Back to Topology View, see update in canvas (new camel icon pod in topology)
 
