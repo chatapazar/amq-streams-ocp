@@ -8,6 +8,7 @@
 --->
 - [Prerequisite for Workshop (Instructor Only)](prereq.md)
 - [AMQ Streams on OCP Quickstart](amq-streams-quickstart/README.md)
+- [AMQ Streams on OCP & Camel K (Kamelet)](amq-streams-kamelet/README.md)
 - [Advanced AMQ Streams on OCP ](amq-streams-full/README.md)
 <!---
 - [Basic Serverless, auto scale up & scale down by request](serverless.md)
