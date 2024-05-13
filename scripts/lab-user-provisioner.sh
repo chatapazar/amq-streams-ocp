@@ -24,9 +24,11 @@ create_projects() {
         oc new-project user$i-amqstreams-quickstart
         oc new-project user$i-amqstreams-full
         oc new-project user$i-amqstreams-client
+        oc new-project user$i-amqstreams-kamelet
         oc delete limitranges --all -n user$i-amqstreams-quickstart
         oc delete limitranges --all -n user$i-amqstreams-full
         oc delete limitranges --all -n user$i-amqstreams-client
+        oc delete limitranges --all -n user$i-amqstreams-kamelet
         repeat '-'
     done
     oc login -u admin -p $ADMIN_PASSWORD --insecure-skip-tls-verify

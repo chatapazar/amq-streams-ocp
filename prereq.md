@@ -27,6 +27,8 @@
     ![](images/prereq-5.png)
 
 
+## Install Red Hat Integration - Camel K Oeprator (latest)
+
 ## Setup Web Termianl
 
 - Install Web Terminal Operator via OpenShift web console then run these commands to custom the tooling image.
@@ -72,3 +74,4 @@
    * user*X*-amqstreams-quickstart
    * user*X*-amqstreams-full
    * user*X*-amqstreams-client
+   * user*X*-amqstreams-kamelet
